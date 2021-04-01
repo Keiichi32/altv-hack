@@ -11,7 +11,7 @@
 
 namespace Hacks
 {
-	void Initialize(LPVOID, LPVOID, LPVOID, LPVOID, LPVOID, LPVOID, LPVOID);
+	void Initialize(LPVOID, LPVOID, LPVOID, LPVOID, LPVOID, LPVOID, LPVOID, LPVOID);
 	void LoadFile(const std::string&);
 	void ChangeSerial(const std::string&);
 	void Remove(const std::string&);

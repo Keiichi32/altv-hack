@@ -8,6 +8,7 @@ typedef __int64(*_SocialId)(__int64);
 typedef __int64(*_MachineGuid)();
 typedef __int64(*_ProductId)();
 typedef void* (*_LicenseHash)(__int64, void*);
+typedef __int64(*_Connect)(__int64, __int64);
 
 _LoadResource LoadResourcePtr = nullptr;
 _OpenFile OpenFilePtr = nullptr;
@@ -16,6 +17,7 @@ _SocialId SocialIdPtr = nullptr;
 _MachineGuid MachineGuidPtr = nullptr;
 _ProductId ProductIdPtr = nullptr;
 _LicenseHash LicenseHashPtr = nullptr;
+_Connect ConnectPtr = nullptr;
 
 std::vector<alt::IResource*> resources;
 std::vector<std::string> paths;
@@ -80,7 +82,14 @@ void* DetourLicenseHash(__int64 a1, void* a2)
     return result;
 }
 
-void Hacks::Initialize(LPVOID LoadResource, LPVOID OpenFile, LPVOID NewString, LPVOID SocialId, LPVOID MachineGuid, LPVOID ProductId, LPVOID LicenseHash)
+__int64 DetourConnect(__int64 a1, __int64 a2)
+{
+    strcpy_s((char*)(a2 + 0xF0), 5, "2.23");
+
+    return ConnectPtr(a1, a2);
+}
+
+void Hacks::Initialize(LPVOID LoadResource, LPVOID OpenFile, LPVOID NewString, LPVOID SocialId, LPVOID MachineGuid, LPVOID ProductId, LPVOID LicenseHash, LPVOID Connect)
 {
     MH_Initialize();
 
@@ -91,6 +100,7 @@ void Hacks::Initialize(LPVOID LoadResource, LPVOID OpenFile, LPVOID NewString, L
     MH_CreateHook(MachineGuid, DetourMachineGuid, (LPVOID*)(&MachineGuidPtr));
     MH_CreateHook(ProductId, DetourProductId, (LPVOID*)(&ProductIdPtr));
     MH_CreateHook(LicenseHash, DetourLicenseHash, (LPVOID*)(&LicenseHashPtr));
+    MH_CreateHook(Connect, DetourConnect, (LPVOID*)(&ConnectPtr));
 
     MH_EnableHook(LoadResource);
     MH_EnableHook(OpenFile);
@@ -99,6 +109,7 @@ void Hacks::Initialize(LPVOID LoadResource, LPVOID OpenFile, LPVOID NewString, L
     MH_EnableHook(MachineGuid);
     MH_EnableHook(ProductId);
     MH_EnableHook(LicenseHash);
+    MH_EnableHook(Connect);
 
     CreateDirectoryA("C:\\altv-hack", NULL);
 }
