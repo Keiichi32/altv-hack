@@ -1,3 +1,5 @@
+### Not working after July 16th. I won't update this repo anymore. If you still want to contact me: djnem23#1635
+
 # altv-hack
 
 Multihack for alt:V Multiplayer.
